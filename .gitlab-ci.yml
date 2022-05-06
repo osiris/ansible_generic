@@ -1,0 +1,41 @@
+---
+# -*- coding: utf-8 -*-
+
+before_script:
+  - env
+  - hostname
+  - ip r
+  - du --max-depth=1
+  - uname -a
+  - ansible --version
+  - ansible-lint --version
+  - awx-cli --version
+
+stages:
+  - ansible-lint
+  - ansible-syntax-check
+  - ansible-awx
+
+ansible-lint:
+  stage: ansible-lint
+  script:
+    - make lint
+  tags:
+    - ansible
+
+ansible-syntax-check:
+  stage: ansible-syntax-check
+  script:
+    - make syntax
+  tags:
+    - ansible
+
+ansible-awx:
+  stage: ansible-awx
+  script:
+    - make awx_version
+    - make awx_user
+    - make awx_job_launch
+  when: manual
+  tags:
+    - awx
