@@ -23,12 +23,12 @@ ansible-lint:
   tags:
     - ansible
 
-ansible-syntax-check:
-  stage: ansible-syntax-check
-  script:
-    - make syntax
-  tags:
-    - ansible
+#ansible-syntax-check:
+#  stage: ansible-syntax-check
+#  script:
+#    - make syntax
+#  tags:
+#    - ansible
 
 ansible-generic-test:
   stage: ansible-generic-test
