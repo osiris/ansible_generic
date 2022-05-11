@@ -14,7 +14,7 @@ before_script:
 stages:
   - ansible-lint
   - ansible-syntax-check
-  - ansible-awx
+  - ansible-generic-test
 
 ansible-lint:
   stage: ansible-lint
@@ -30,11 +30,13 @@ ansible-syntax-check:
   tags:
     - ansible
 
-ansible-awx:
-  stage: ansible-awx
+ansible-generic-test:
+  stage: ansible-generic-test
   script:
     - make awx_version
     - make awx_user
+    - AWX_GITLAB_JOB_LAUNCH=ansible_generic_v0.1.0; AWX_GITLAB_JOB_LIMIT=wst145f0661
+    - sleep 3
     - make awx_job_launch
   when: manual
   tags:
