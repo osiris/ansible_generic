@@ -1,8 +1,8 @@
 ---
 
-- hosts: localhost
+- hosts: [wst]
   become: yes
-  gather_facts: yes
+  gather_facts: no
   tasks:
 
   - name: Restart Service
