@@ -1,0 +1,12 @@
+---
+
+- hosts: [all]
+  become: yes
+  gather_facts: no
+  tasks:
+
+  - name: Restart Service
+    include_tasks: tasks/service-restart.yml
+
+  - name: Check Service Status
+    include_tasks: tasks/service-status.yml
