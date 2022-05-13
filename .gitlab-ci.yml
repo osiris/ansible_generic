@@ -23,21 +23,22 @@ ansible-lint:
   tags:
     - ansible
 
-#ansible-syntax-check:
-#  stage: ansible-syntax-check
-#  script:
-#    - make syntax
-#  tags:
-#    - ansible
+ansible-syntax-check:
+  stage: ansible-syntax-check
+  script:
+    - PLAYBOOK=service-restart.yml make syntax
+    - PLAYBOOK=service-status.yml  make syntax
+    - PLAYBOOK=service.yml         make syntax
+  tags:
+    - ansible
 
 ansible-generic-test:
   stage: ansible-generic-test
   script:
     - make awx_version
     - make awx_user
-    - AWX_GITLAB_JOB_LAUNCH=prn_cup_rst_v0.1.0; AWX_GITLAB_JOB_LIMIT=wst144f0661
+    - AWX_GITLAB_JOB_LAUNCH=prn_cup_rst_v0.1.0 make awx_job_launch
     - sleep 3
-    - make awx_job_launch
   when: manual
   tags:
     - awx
