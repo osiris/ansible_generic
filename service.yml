@@ -7,6 +7,8 @@
 
   - name: Restart Service
     include_tasks: tasks/service-restart.yml
+    when: generic_service_status == "restart"
 
   - name: Check Service Status
     include_tasks: tasks/service-status.yml
+    when: ( generic_service_check == true ) or ( generic_service_check is undefined )
