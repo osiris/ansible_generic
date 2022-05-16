@@ -20,4 +20,3 @@
   - name: Check Service Status
     include_tasks: tasks/service-status.yml
     when: ( generic_service_check | bool ) or ( generic_service_check is undefined )
-    failed_when: generic_service_name is undefined
