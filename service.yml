@@ -7,16 +7,16 @@
 
   - name: Restart Service
     include_tasks: tasks/service-restart.yml
-    when: generic_service_status == "restart"
+    when: generic_service_status == "restart" | default(omit)
 
   - name: Start Service
     include_tasks: tasks/service-start.yml
-    when: generic_service_status == "start"
+    when: generic_service_status == "start" | default(omit)
 
   - name: Stop Service
     include_tasks: tasks/service-stop.yml
-    when: generic_service_status == "stop"
+    when: generic_service_status == "stop" | default(omit)
 
   - name: Check Service Status
     include_tasks: tasks/service-status.yml
-    when: ( generic_service_check == true ) or ( generic_service_check is undefined )
+    when: ( generic_service_check | bool ) or ( generic_service_check is undefined )
