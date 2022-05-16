@@ -12,6 +12,9 @@
   - name: Start Service
     include_tasks: tasks/service-start.yml
     when: generic_service_status == "start"
+  - name: Stop Service
+    include_tasks: tasks/service-stop.yml
+    when: generic_service_status == "stop"
   - name: Check Service Status
     include_tasks: tasks/service-status.yml
     when: ( generic_service_check == true ) or ( generic_service_check is undefined )
