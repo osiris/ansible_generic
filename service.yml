@@ -1,21 +1,25 @@
 ---
 
-- hosts: [all]
+- hosts: [wst]
   become: yes
   gather_facts: no
   tasks:
 
+  - name: Add Default Value to Service Status
+    set_fact: generic_service_status=""
+    when: generic_service_status is undefined
+
   - name: Restart Service
     include_tasks: tasks/service-restart.yml
-    when: generic_service_status == "restart" | default('')
+    when: generic_service_status == "restart"
 
   - name: Start Service
     include_tasks: tasks/service-start.yml
-    when: generic_service_status == "start" | default('')
+    when: generic_service_status == "start"
 
   - name: Stop Service
     include_tasks: tasks/service-stop.yml
-    when: generic_service_status == "stop" | default('')
+    when: generic_service_status == "stop"
 
   - name: Check Service Status
     include_tasks: tasks/service-status.yml
