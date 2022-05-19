@@ -4,5 +4,9 @@
   service_facts:
 
 - name: "Service {{ generic_service_name }} state"
+  with_items: "{{ generic_service_name }}"
+  loop_control:
+    loop_var: service
+    label: "{{ service }}"
   debug:
-    msg: "{{ generic_service_name }} status: {{ ansible_facts.services[ generic_service_name ].state }}"
+    msg: "{{ service }} status: {{ ansible_facts.services[ service ].state }}"
