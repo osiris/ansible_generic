@@ -1,0 +1,5 @@
+---
+
+- name: check current service {{ item }} state
+  debug:
+    msg: "{{ item }} state: {{ ansible_facts.services[ item ].state }}"

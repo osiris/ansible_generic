@@ -1,0 +1,9 @@
+---
+
+- name: (generic_service) service {{ item.name }} is {{ item.state }}
+  service:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  become: true
+  no_log: true
+  when: item.name is defined and item.state is defined

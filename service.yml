@@ -4,24 +4,17 @@
   hosts: [all]
   become: yes
   gather_facts: no
+
   tasks:
 
-  - name: Add Default Value to Service Status
-    set_fact: generic_service_status=""
-    when: generic_service_status is undefined
+  - name: (generic_service) include service tasks
+    include_tasks: tasks/service-state.yml
+    with_items: "{{ generic_service_state }}"
 
-  - name: Restart Service
-    include_tasks: tasks/service-restart.yml
-    when: generic_service_status == "restart"
+  - name: (generic_service) populate service facts
+    service_facts:
+    no_log: true
 
-  - name: Start Service
-    include_tasks: tasks/service-start.yml
-    when: generic_service_status == "start"
-
-  - name: Stop Service
-    include_tasks: tasks/service-stop.yml
-    when: generic_service_status == "stop"
-
-  - name: Check Service Status
-    include_tasks: tasks/service-status.yml
-    when: ( generic_service_check | bool ) or ( generic_service_check is undefined )
+  - name: (generic_service) include service check
+    include_tasks: tasks/service-check.yml
+    with_items: "{{ generic_service_state | map(attribute='name') | list | unique }}"
