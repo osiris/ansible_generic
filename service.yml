@@ -1,5 +1,6 @@
 ---
 
+- name: (generic_service) check state of each service after change state of multiple services
   hosts: [all]
   become: yes
   gather_facts: no
