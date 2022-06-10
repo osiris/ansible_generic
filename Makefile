@@ -16,6 +16,7 @@ AWX_ENV               ?= develop
 AWX_GITLAB_USER       ?= awx_gitlab_test
 AWX_GITLAB_JOB_LAUNCH ?= undefined_job_template
 AWX_GITLAB_JOB_LIMIT  ?= undefined_limit
+AWX_GITLAB_PROJECT    ?= undefined_project
 INVENTORY     ?= inventory
 GROUP         ?=
 HOSTS_SUFFIX  ?= -$(GROUP)
@@ -57,6 +58,9 @@ awx_user:
 
 awx_job_launch:
 	awx-cli job launch -J $(AWX_GITLAB_JOB_LAUNCH) --monitor --limit $(AWX_GITLAB_JOB_LIMIT)
+
+awx_project_update:
+	awx-cli project update -n $(AWX_GITLAB_PROJECT)
 
 lint:
 	[[ -d 'tests' ]] && cd tests; ansible-lint $(DEBUG) $(PLAYBOOK)
