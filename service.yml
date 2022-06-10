@@ -1,6 +1,6 @@
 ---
 
-- hosts: [wst]
+  hosts: [all]
   become: yes
   gather_facts: no
   tasks:
