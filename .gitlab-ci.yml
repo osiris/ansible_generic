@@ -26,8 +26,6 @@ ansible-lint:
 ansible-syntax-check:
   stage: ansible-syntax-check
   script:
-    - PLAYBOOK=service-restart.yml make syntax
-    - PLAYBOOK=service-status.yml  make syntax
     - PLAYBOOK=service.yml         make syntax
   tags:
     - ansible
