@@ -11,6 +11,26 @@ This repository is for generic playbooks using _Ansible_ core modules.
 
 None
 
+## Playbooks
+
+### `service.yml`
+
+Allow to modify state of multiple services, variable example:
+
+```yaml
+
+generic_service_state:
+  - name: mysql
+    state: stopped
+  - name: mysql
+    state: started
+  - name: nginx
+    state: reloaded
+  - name: nginx
+    state: restarted
+
+```
+
 ## License
 
 GNU General Public License, GPLv3.
