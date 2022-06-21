@@ -1,0 +1,20 @@
+---
+
+- name: (generic_service) check state of each service after change state of multiple services
+  hosts: [all]
+  become: yes
+  gather_facts: no
+
+  tasks:
+
+  - name: (generic_service) include service tasks
+    include_tasks: tasks/service-state.yml
+    with_items: "{{ generic_service_state }}"
+
+  - name: (generic_service) populate service facts
+    service_facts:
+    no_log: true
+
+  - name: (generic_service) include service check
+    include_tasks: tasks/service-check.yml
+    with_items: "{{ generic_service_state | map(attribute='name') | list | unique }}"

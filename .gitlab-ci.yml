@@ -1,0 +1,42 @@
+---
+# -*- coding: utf-8 -*-
+
+before_script:
+  - env
+  - hostname
+  - ip r
+  - du --max-depth=1
+  - uname -a
+  - ansible --version
+  - ansible-lint --version
+  - awx-cli --version
+
+stages:
+  - ansible-lint
+  - ansible-syntax-check
+  - ansible-generic-test
+
+ansible-lint:
+  stage: ansible-lint
+  script:
+    - make lint
+  tags:
+    - ansible
+
+ansible-syntax-check:
+  stage: ansible-syntax-check
+  script:
+    - PLAYBOOK=service.yml         make syntax
+  tags:
+    - ansible
+
+ansible-generic-test:
+  stage: ansible-generic-test
+  script:
+    - make awx_version
+    - make awx_user
+    - AWX_GITLAB_JOB_LAUNCH=prn_cup_rst_v0.1.0 make awx_job_launch
+    - sleep 3
+  when: manual
+  tags:
+    - awx

@@ -1,0 +1,36 @@
+---
+
+- name: Playbook for local debug
+  hosts: [all]
+  connection: local
+  gather_facts: False
+  become: no
+
+  tasks:
+
+    - name: get shell environment
+      shell: 'env'
+      no_log: true
+      register: shell_env
+      changed_when: False
+
+    - debug: var=shell_env.stdout_lines
+
+    - name: get command environment
+      command: 'env'
+      no_log: true
+      register: command_env
+      changed_when: False
+
+    - debug: var=command_env.stdout_lines
+
+    - name: debug variable
+      debug:
+        msg: "{{ debug_variable | default(omit) }}"
+      changed_when: False
+
+    - name: debug all variables
+      debug:
+        var: hostvars
+      changed_when: False
+      when: debug_all_variables | default(False)
