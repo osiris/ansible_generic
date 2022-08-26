@@ -24,8 +24,10 @@ Default variables:
 | `python_dnf_config      ` | `true              ` |
 | `python_python2         ` | `false             ` |
 | `python_python2_bin     ` | `/usr/bin/python2.7` |
+| `python_python2_pkg     ` | `python2           ` |
 | `python_python3         ` | `true              ` |
 | `python_python3_bin     ` | `/usr/bin/python3.6` |
+| `python_python3_pkg     ` | `python36          ` |
 | `python_yum_config      ` | `true              ` |
 | `python_yum_update      ` | `true              ` |
 
