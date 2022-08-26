@@ -1,0 +1,111 @@
+---
+
+- name: Install python with ansible
+  hosts: [all]
+  become: true
+  gather_facts: no
+
+  vars:
+    python_dnf_config: true
+    python_python2: false
+    python_python2_bin: /usr/bin/python2.7
+    python_python2_pkg: python2
+    python_python3: true
+    python_python3_bin: /usr/bin/python3.6
+    python_python3_pkg: python36
+    python_yum_config: true
+    python_yum_update: true
+
+  pre_tasks:
+
+  - name: verify yum.conf exists
+    raw: test -e /etc/yum.conf
+    args:
+      executable: /bin/bash
+    register: python_yum
+    ignore_errors: true
+    changed_when: false
+
+  - name: verify dnf.conf exists
+    raw: test -e /etc/dnf/dnf.conf
+    args:
+      executable: /bin/bash
+    register: python_dnf
+    ignore_errors: true
+    changed_when: false
+
+  - name: verify python2
+    raw: command -v {{ python_python2_bin }}
+    args:
+      executable: /bin/bash
+    ignore_errors: true
+    register: python_result2
+    changed_when: false
+
+  - name: verify python3
+    raw: command -v {{ python_python3_bin }}
+    args:
+      executable: /bin/bash
+    ignore_errors: true
+    register: python_result3
+    changed_when: false
+
+  - name: configure dns
+    raw: echo "nameserver {{ python_dns_nameserver }}" > /etc/resolv.conf
+    args:
+      executable: /bin/bash
+    changed_when: false
+    when:
+      - python_dns_nameserver is defined
+
+  - name: verify dns
+    raw: curl -I -x {{ python_http_proxy_url }} {{ python_http_test }}
+    args:
+      executable: /bin/bash
+    changed_when: false
+    when:
+      - python_http_proxy_url is defined
+      - python_http_test is defined
+
+  - name: configure proxy in yum.conf
+    raw: sed -i 's/^proxy.*/proxy=http:\/\/{{ python_http_proxy_host }}:{{ python_http_proxy_port }}/g' /etc/yum.conf
+    args:
+      executable: /bin/bash
+    when:
+      - python_yum_config | bool
+      - not python_yum.failed | bool
+      - python_http_proxy_host is defined
+      - python_http_proxy_port is defined
+
+  - name: configure proxy in dnf.conf
+    raw: sed -i 's/^proxy.*/proxy=http:\/\/{{ python_http_proxy_host }}:{{ python_http_proxy_port }}/g' /etc/dnf/dnf.conf
+    args:
+      executable: /bin/bash
+    when:
+      - python_dnf_config | bool
+      - not python_dnf.failed | bool
+      - python_http_proxy_host is defined
+      - python_http_proxy_port is defined
+
+  - name: yum update
+    raw: yum update -y
+    args:
+      executable: /bin/bash
+    when: python_yum_update | bool
+
+  - name: install python 2
+    raw: yum install -y {{ python_python2_pkg }}
+    args:
+      executable: /bin/bash
+    when:
+      - python_python2 | bool
+      - python_result2.failed
+
+  - name: install python 3
+    raw: yum install -y {{ python_python3_pkg }}
+    args:
+      executable: /bin/bash
+    changed_when: false
+    when:
+      - python_python3 | bool
+      - python_result3.failed
