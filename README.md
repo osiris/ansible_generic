@@ -13,6 +13,32 @@ None
 
 ## Playbooks
 
+### `raw-python.yml`
+
+Install `python` usign `raw` _module_ to allow use _Ansible_ in remote _host_.
+
+Default variables:
+
+| _variable_                | _default_            |
+|---------------------------|----------------------|
+| `python_dnf_config      ` | `true              ` |
+| `python_python2         ` | `false             ` |
+| `python_python2_bin     ` | `/usr/bin/python2.7` |
+| `python_python3         ` | `true              ` |
+| `python_python3_bin     ` | `/usr/bin/python3.6` |
+| `python_yum_config      ` | `true              ` |
+| `python_yum_update      ` | `true              ` |
+
+Optional variables:
+
+| _variable_                | _example_                                                           |
+|---------------------------|---------------------------------------------------------------------|
+| `python_dns_nameserver  ` |  `1.1.1.1`                                                          |
+| `python_http_proxy_host ` |  `10.1.0.1`                                                         |
+| `python_http_proxy_port ` |  `3128`                                                             |
+| `python_http_proxy_url  ` |  `http://{{ python_http_proxy_host }}:{{ python_http_proxy_port }}` |
+| `python_http_test:      ` |  `https://mirrors.almalinux.org:443/mirrorlists/8/baseos`           |
+
 ### `service.yml`
 
 Allow to modify state of multiple services, variable example:
